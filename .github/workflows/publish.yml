@@ -1,0 +1,39 @@
+name: Publish
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  external-trigger-scheduler:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.1.0
+        with:
+          fetch-depth: "0"
+
+      - name: Create buildout
+        run: |
+          arr[0]="Italian"
+          arr[1]="Norwegian"
+          arr[2]="Canadian"
+          arr[3]="Swedish"
+          arr[4]="Danish"
+          arr[5]="Finnish"
+          arr[6]="Dutch"
+          arr[7]="Turkish"
+          arr[8]="German"
+
+          rand=$[ $RANDOM % 9 ]
+          nat=${arr[$rand]}
+
+          sed "s/@nationality/$nat/g" index.html > buildout/index.html
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3.9.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          cname: whoismark.today
+          publish_dir: ./buildout
