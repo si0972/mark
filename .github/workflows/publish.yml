@@ -11,6 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3.1.0
         with:
+          token: ${{ secrets.BOT_KEEP_ALIVE_TOKEN }}
           fetch-depth: "0"
 
       - name: Create buildout
@@ -31,6 +32,12 @@ jobs:
           mkdir buildout
 
           sed "s/@nationality/$nat/g" index.html > buildout/index.html
+
+          echo "$(date +'%m/%d/%Y') $nat" >> log
+
+      - uses: EndBug/add-and-commit@v9
+        with:
+          add: "log"
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3.9.1
