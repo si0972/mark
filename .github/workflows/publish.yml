@@ -27,7 +27,7 @@ jobs:
           arr[8]="German"
           arr[9]="Unkown"
 
-          rand=$[ $RANDOM % 9 ]
+          rand=$[ $RANDOM % 10 ]
           nat=${arr[$rand]}
 
           mkdir buildout
