@@ -25,6 +25,7 @@ jobs:
           arr[6]="Dutch"
           arr[7]="Turkish"
           arr[8]="German"
+          arr[9]="Unkown"
 
           rand=$[ $RANDOM % 9 ]
           nat=${arr[$rand]}
