@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3.1.0
         with:
-          token: ${{ secrets.BOT_KEEP_ALIVE_TOKEN }}
+          token: ${{ secrets.MARK_KEEP_ALIVE }}
           fetch-depth: "0"
 
       - name: Create buildout
