@@ -9,7 +9,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v3.3.0
         with:
           token: ${{ secrets.MARK_KEEP_ALIVE }}
           fetch-depth: "0"
@@ -36,9 +36,14 @@ jobs:
 
           echo "$(date +'%m/%d/%Y') $nat" >> log
 
-      - uses: EndBug/add-and-commit@v9
-        with:
-          add: "log"
+      - uses: actions/checkout@v3.3.0
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add log
+          git commit -m "Rotate"
+          git push
+
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3.9.1
