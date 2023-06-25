@@ -1,0 +1,46 @@
+name: Publish
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.5.2
+        with:
+          token: ${{ secrets.MARK_KEEP_ALIVE }}
+          fetch-depth: "0"
+
+      - name: Create buildout
+        run: |
+          payload=$(curl -s https://random-data-api.com/api/nation/random_nation)
+          nat=$(echo $payload | jq -r '.nationality')
+          flag=$(echo $payload | jq -r '.flag')
+          sport=$(echo $payload | jq -r '.national_sport')
+
+          mkdir buildout
+
+          sed "s/@nationality/$nat/g" index.html > buildout/index.html
+          sed "s/@flag/$flag/g" -i buildout/index.html
+          sed "s/@sport/$sport/g" -i buildout/index.html
+
+          echo "$(date +'%m/%d/%Y') $nat" >> log
+
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add log
+          git commit -m "Rotate"
+          git push
+
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3.9.3
+        with:
+          github_token: ${{ secrets.MARK_KEEP_ALIVE }}
+          publish_branch: gh-pages
+          cname: whoismark.today
+          publish_dir: ./buildout
