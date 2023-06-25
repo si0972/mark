@@ -9,7 +9,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.5.2
+      - uses: actions/checkout@v3.5.3
         with:
           token: ${{ secrets.MARK_KEEP_ALIVE }}
           fetch-depth: "0"
