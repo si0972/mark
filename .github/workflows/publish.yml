@@ -18,13 +18,11 @@ jobs:
         run: |
           payload=$(curl -s https://random-data-api.com/api/nation/random_nation)
           nat=$(echo $payload | jq -r '.nationality')
-          flag=$(echo $payload | jq -r '.flag')
           sport=$(echo $payload | jq -r '.national_sport')
 
           mkdir buildout
 
           sed "s/@nationality/$nat/g" index.html > buildout/index.html
-          sed "s/@flag/$flag/g" -i buildout/index.html
           sed "s/@sport/$sport/g" -i buildout/index.html
 
           echo "$(date +'%m/%d/%Y') $nat" >> log
